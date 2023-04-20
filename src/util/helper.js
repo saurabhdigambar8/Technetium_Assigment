@@ -8,3 +8,4 @@ const getBatchInfo=function(){
     return " Technetium, W4D3, the topic for today is Nodejs module"
 }
 module.exports={printMonth,pritDate,getBatchInfo}
+
