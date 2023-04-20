@@ -32,10 +32,10 @@ const router = express.Router();
 //     res.send('student data')
 // })
 let MoviesArr=["Rang de basanti", "The shining", "Lord of the rings", "Batman begins"]
-router.get('/GET/Movie',function(req,res){
+router.get('/movie',function(req,res){
     res.send(MoviesArr)
 })
-router.get('/GET/movies/:indexNumber',function (req,res){
+router.get('/movies/:indexNumber',function (req,res){
     let i=req.params.indexNumber
     if(i>0&&i<=MoviesArr.length){
     res.send(MoviesArr[i-1])}
@@ -43,7 +43,7 @@ router.get('/GET/movies/:indexNumber',function (req,res){
         res.send("No is invalid")
     }
 })
-router.get()
+
 
 
 
