@@ -1,11 +1,13 @@
+const presentDate=new Date()
+let months=['Jan','Feb',"Mar","Apr","May","Jun","jully","Aug","Sep","oct","Nov","dec"]
 const pritDate=function(){
-    return "current date is 19-Apr-2023"
+    console.log("today date is"+presentDate.toLocaleDateString());
 }
 const printMonth=function(){
-    return "this month is April "
+    console.log("this month is"+months[presentDate.getMonth()]);
 }
 const getBatchInfo=function(){
-    return " Technetium, W4D3, the topic for today is Nodejs module"
+    console.log("Technetium, W4D3, the topic for today is Nodejs module")
 }
 module.exports={printMonth,pritDate,getBatchInfo}
 

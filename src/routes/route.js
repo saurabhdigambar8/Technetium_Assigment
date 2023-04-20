@@ -33,9 +33,13 @@ router.get('/test-you', function (req, res) {
 });
 //==========================================
 router.get('/test-me',function(req,res){
-    console.log(logger.welcome());
-   console.log(helper.pritDate(),helper.printMonth(),helper.getBatchInfo());
-  console.log(formatter.tri(),formatter.toUpper(),formatter.toLower());
+    logger.welcome();
+   helper.pritDate()
+   helper.printMonth()
+   helper.getBatchInfo();
+  formatter.tri(),
+  formatter.toUpper(),
+  formatter.toLower();
     res.send("this is done")
 })
 
