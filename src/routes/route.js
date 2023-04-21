@@ -1,50 +1,48 @@
 const express = require('express');
 const { route } = require('express/lib/application');
+const { param } = require('express/lib/router');
 const router = express.Router();
 
-// const commonFile = require('./common')
-// const myUnderscore = require('underscore')
-
-// router.get('/cohorts', function (request, response){
-//     // logic to get the cohorts from database
-//     // logic tp get only the active cohorts
-//     // logic to get only the cohort with a size than 50
-//     // logic to get only the backend cohorts
-//     response.send(['technetium','nobelium'])
-// })
-
-// router.get('/students', function(req, res){
-//     // receive or access the query params in the code
-//     // write a logic on these query params
-//     // city, score
-//     console.log(req.query)
-//     let requestedCity = req.query.city
-//     let sortField = req.query.sort
-//     // logic to get students
-//     res.send(["Sabiha","Neha","Akash","Sonali"])
-// })
-
-// router.get('/students/:studentName', function(req, res) {
-//     console.log(req.params.studentName)
-//     /// go to database and search for studentName student
-//     // store the data found in this variable - studentDetails
-//     //res.send({data: studentDetails})
-//     res.send('student data')
-// })
 let MoviesArr=["Rang de basanti", "The shining", "Lord of the rings", "Batman begins"]
 router.get('/movie',function(req,res){
     res.send(MoviesArr)
 })
 router.get('/movies/:indexNumber',function (req,res){
     let i=req.params.indexNumber
-    if(i>0&&i<=MoviesArr.length){
-    res.send(MoviesArr[i-1])}
+    if(i>=0&&i<MoviesArr.length){
+    res.send(MoviesArr[i])}
     else{
-        res.send("No is invalid")
+        res.send("No is invalid plese enter valid number")
     }
 })
 
+const moviesArrOfObj=[ {
+    id: 1,
+    name: "The Shining"
+   }, {
+    id: 2,
+    name: "Incendies"
+   }, {
+    id: 3,
+    name: "Rang de Basanti"
+   }, {
+    id: 4,
+    name: "Finding Nemo"
+   }]
+   
+ router.get('/films',function(req,res){
+    res.send(moviesArrOfObj)
+ })
+router.get('/films/:filmId',function(req,res){
+   let i=req.params.filmId
+   for(let j=0;j<moviesArrOfObj.length;j++){
+     if(moviesArrOfObj[j].id==i){
+        res.send(moviesArrOfObj[j])
+     }
+   }
 
+ res.send("no movie exist with this id ")
+})
 
 
 module.exports = router;
