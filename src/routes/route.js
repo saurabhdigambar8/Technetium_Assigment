@@ -1,31 +1,50 @@
 const express = require('express');
-const { route } = require('express/lib/application');
-const { param } = require('express/lib/router');
 const router = express.Router();
 
-let arr=[1,2,3,5,6,7] 
-router.get('/sol1',function(req,res){
-  let sum=7*(7+1)/2 //n(n+1)/2
-  let arrsum=0
-  for(let i=0;i<arr.length;i++){
-    arrsum=arrsum+arr[i]
-  }
-  let missingNum=sum-arrsum 
-    res.send({data:missingNum})
-})
-//===========2nd Api
 
- let arr2=[33, 34, 35, 37, 38]
-router.get('/sol2',function(req,res){
-  let sum=6*(33+38)/2 //n(first+last)/2 
-  let arrsum=0
-  for(let i=0;i<arr2.length;i++){
-    arrsum=arrsum+arr2[i]
-  }
-  let missingNum=sum-arrsum 
-    res.send({data:missingNum})
-})
+let players =
+   [
+       {
+           "name": "manish",
+           "dob": "1/1/1995",
+           "gender": "male",
+           "city": "jalandhar",
+           "sports": [
+               "swimming"
+           ]
+       },
+       {
+           "name": "gopal",
+           "dob": "1/09/1995",
+           "gender": "male",
+           "city": "delhi",
+           "sports": [
+               "soccer"
+           ],
+       },
+       {
+           "name": "lokesh",
+           "dob": "1/1/1990",
+           "gender": "male",
+           "city": "mumbai",
+           "sports": [
+               "soccer"
+           ],
+       },
+   ]
 
 
-
+   router.post('/players', function (req, res) {
+       //LOGIC WILL COME HERE
+      let arr=req.body
+     
+      for(let i=0;i<players.length;i++){
+        if(players[i].name==arr.name){
+        return   res.send("players name already exist")
+        }
+      }
+      players.push(arr)
+      return res.send({players,status:true})
+   })
+  
 module.exports = router;
