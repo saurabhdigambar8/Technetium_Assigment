@@ -5,27 +5,17 @@ const bookSchema = new mongoose.Schema( {
     authorName: String, 
     tags: [String],
     
-    isPublished: Boolean,
+    year:Number,
     prices: {
         indianPrice: String,
         europePrice: String,
     },
-    sales: {type: Number, default: 10}
+    totalPages:Number,
+    stockAvailable:Boolean
+
 }, { timestamps: true });
 
 
-module.exports = mongoose.model('Book', bookSchema) //users
+module.exports = mongoose.model('Book2', bookSchema) 
 
-//Validation:
-//require:true
-//unique
-// default
 
-//String
-//Number
-//Date
-//Boolean
-// Arrays
-// Object
-// ObjectId
-// Buffer - not cover
