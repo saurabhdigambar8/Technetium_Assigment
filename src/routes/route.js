@@ -9,7 +9,7 @@ router.get("/bookList", BookController.bookList)
 router.post("/createBook",BookController.createBook)
 router.post("/getBooksInYear",BookController.getBooksInYear)
 router.post("/getParticularBooks",BookController.getParticularBooks)
-router.post("/getXINRBooks",BookController.getXINRBooks)
-router.post("/getRandomBooks",BookController.getRandomBooks)
+router.get("/getXINRBooks",BookController.getXINRBooks)
+router.get("/getRandomBooks",BookController.getRandomBooks)
 
 module.exports = router;

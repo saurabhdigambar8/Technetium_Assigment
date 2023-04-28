@@ -14,24 +14,27 @@ const bookList=async function(req,res){
 }
 const getBooksInYear=async function(req,res){
     let year=req.body.year
-    let allBook=await BookModel.find({year:year})
-    res.send({msg:allBook})
+    //let year=req.query.year
+    
+    let Book=await BookModel.find({year:year})
+    res.send({msg:Book})
 }
 const getParticularBooks=async function(req,res){
-    let data=req.body
-    let allBook=await BookModel.find({
-        $or :[{authorName:data.authorName},{bookName:data.bookName},{tags:data.tags},{prices:data.prices}
-        ,{totalPages:data.totalPages},{stockAvailable:data.stockAvailable}]
+     let data=req.body
+    // console.log(data);
+     let allBook=await BookModel.find({
+        $or:[{authorName:data.authorName},{bookName:data.bookName},
+           {"prices.indianPrice":data.indianPrice},{"prices.europePrice":data.europePrice},
+           {tags:{$in:[data.tags]}}
+            ,{totalPages:data.totalPages},{stockAvailable:data.stockAvailable}]
     })
     res.send({msg:allBook})
 }
 const getXINRBooks=async function(req,res){
-    let inr=req.body.inr
-    let allBook=await BookModel.find({prices:{indianPrice:data.inr}})
+    let allBook=await BookModel.find({"prices.indianPrice":{$in:["100INR","200INR","500INR"]}})
     res.send({msg:allBook})
 }
 const getRandomBooks=async function(req,res){
-    let inr=req.body.inr
     let allBook=await BookModel.find({$or:[{stockAvailable:true},{totalPages:{$gt:500}}]})
     res.send({msg:allBook})
 }
