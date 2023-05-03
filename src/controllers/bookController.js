@@ -1,66 +1,68 @@
 const authorModel = require("../models/authorModel")
-const bookModel= require("../models/bookModel")
+const bookModel = require("../models/bookModel")
 const publisherModel = require("../models/publisherModel")
 const ObjectId = require('mongoose').Types.ObjectId
 
 
-const createBook= async function (req, res) {
+const createBook = async function (req, res) {
     let book = req.body
-     if( !book.author_id || !book.publisher_id){
+    if (!book.author_id || !book.publisher_id) { // check for present of id of publisher and author
 
-          if(!book.author_id){
-               return  res.send({msg:"Author_id is Misssing its required "})
-            }
-         else{
-            return  res.send({msg:"Publisher_id is misssing its required"})
-         }   
-      }
-   else if(!ObjectId.isValid(book.author_id)||!ObjectId.isValid(book.publisher_id)){
-       if(!ObjectId.isValid(book.author_id)){
-        return  res.send({msg:"Invalid AuthorId"})
-       }else{
-        return  res.send({msg:" Invalid Publishers Id"})
-       }
-     }
-    else{
-        let aMatch= await authorModel.findOne({_id:book.author_id})
-        let pMatch= await publisherModel.findOne({_id:book.publisher_id})
-        if(aMatch==null||pMatch==null){
-            if(aMatch==null){
-               return  res.send({msg:"AuthorId is not match"})
-            }else{
-               return  res.send({msg:" Publishers Id not Match "})
-            }
-        }else{
-            let bookCreated = await bookModel.create(book)
-            res.send({data: bookCreated})
+        if (!book.author_id) {
+            return res.send({ msg: "Author_id is Misssing its required " })
+        }
+        else {
+            return res.send({ msg: "Publisher_id is misssing its required" })
         }
     }
- }
+    else if (!ObjectId.isValid(book.author_id) || !ObjectId.isValid(book.publisher_id)) {//verify length of id 
+        if (!ObjectId.isValid(book.author_id)) {
+            return res.send({ msg: "Invalid AuthorId" })
+        } else {
+            return res.send({ msg: " Invalid Publishers Id" })
+        }
+    }
+    else {
+        let aMatch = await authorModel.findOne({ _id: book.author_id })
+        let pMatch = await publisherModel.findOne({ _id: book.publisher_id })
+        if (aMatch == null || pMatch == null) { // Match id in document in database
+            if (aMatch == null) {
+                return res.send({ msg: "AuthorId is not match" })
+            } else {
+                return res.send({ msg: " Publishers Id not Match " })
+            }
+        } else {
+            let bookCreated = await bookModel.create(book)
+            res.send({ data: bookCreated })
+        }
+    }
+}
 
-const getBooksData= async function (req, res) {
+const getBooksData = async function (req, res) {
     let books = await bookModel.find()
-    res.send({data: books})
+    res.send({ data: books })
 }
 
 const getBooksWithAuthorDetails = async function (req, res) {
     let book = await bookModel.find().populate('author_id').populate('publisher_id')
-    res.send({data: book})
+    res.send({ data: book })
 
 }
 
-const book=async function (req,res){
-    let hardCoverFalse= await bookModel.updateMany({},{$set:{isHardCover:false}},{upsert:true})
-    let hardCoverTrue=await bookModel.updateMany({publisher_id:{$in:["64510c8b9418cf339b68ff44","6450e5d3679047953e33d96a"]}},{isHardCover:true},{upsert:true})
-    let data=await bookModel.find().populate("author_id")
-    let ratingarr=data.filter(ele=>ele.author_id.rating>3.5)
-    let priceArr=ratingarr.map(ele=>ele._id)
-   let priceUpdate=await bookModel.updateMany({_id:{$in:priceArr}},{$inc:{price:10}})
+const book = async function (req, res) {
+    let hardCoverFalse = await bookModel.updateMany({}, { $set: { isHardCover: false } }, { upsert: true })
+    //make all book with hardCover FAlse
+    let hardCoverTrue = await bookModel.updateMany({ publisher_id: { $in: ["64510c8b9418cf339b68ff44","6450e5d3679047953e33d96a"] } }, { isHardCover: true }, { upsert: true })// Make all book published by penguin and HarperCollin are hardCover True
+    let data = await bookModel.find().populate("author_id") //get allBook data with author detail for checking author rating 
+    let ratingarr = data.filter(ele => ele.author_id.rating > 3.5)// In data we get all book in array of object form Here i filter all book which has rating greter than 3.5 we get filtered book in ratingarr in arry of object form.
+    let priceArr = ratingarr.map(ele => ele._id)//Here in priceArr i stored only id of filterd book
 
-    let allbook=await bookModel.find().populate('author_id').populate('publisher_id')
-    res.send ({data:allbook})
+    let priceUpdate = await bookModel.updateMany({ _id: { $in: priceArr } }, { $inc: { price: 10 } })//match id with filtered book id and update price by incresing 10Rs 
+
+    let allbook = await bookModel.find().populate('author_id').populate('publisher_id')//Get details of all book with referce of athor and publisher
+    res.send({ data: allbook })
 }
-module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
+module.exports.createBook = createBook
+module.exports.getBooksData = getBooksData
 module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
-module.exports.book=book
+module.exports.book = book
