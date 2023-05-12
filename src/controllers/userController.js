@@ -38,10 +38,8 @@ const loginUser = async function (req, res) {
   );
   res.setHeader("x-auth-token", token);
   res.send({ status: true, token: token });
-};
-
+}; 
 const getUserData = async function (req, res) {
-
   let userId = req.params.userId;
   let userDetails = await userModel.findById(userId);
   // if (!userDetails)
@@ -77,3 +75,4 @@ module.exports.loginUser = loginUser;
 module.exports.getUserData = getUserData;
 module.exports.updateUser = updateUser;
 module.exports.deleteUSer = deleteUSer
+      
